@@ -4,28 +4,28 @@ const {
     createUser,
     getUserById,
     updateUserById,
-    deleteUserByIda
+    deleteUserById
 } = require("./../controllers/userController")
 
 
-const router = express.Router()
+const Router = express.Router()
 
-router.route("/")
+Router.route("/")
     .get(getAllUsers)
     .post(createUser)
 
-router.route("/:id")
+Router.route("/:id")
     .get(getUserById)
     .patch(updateUserById)
-    .delete(deleteUserByIda)
+    .delete(deleteUserById)
 
-module.exports = router
+module.exports = Router
 
 
 
-// router.get("/",getAllUsers)
-// router.post("/",createUser)
+// Router.get("/",getAllUsers)
+// Router.post("/",createUser)
 
-// router("/:id",getUserById)
-// router.patch("/:id",updateUserById)
-// router.delete("/:id",deleteUserByIda)
+// Router("/:id",getUserById)
+// Router.patch("/:id",updateUserById)
+// Router.delete("/:id",deleteUserByIda)

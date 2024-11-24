@@ -1,24 +1,31 @@
 const express = require('express');
-const { getAlltours, createtour, gettourById, updatetourById, deletetourByIda } = require("./../controllers/tourController")
-const router = express.Router()
+const {
+    getAlltours,
+    createtour,
+    gettourById,
+    updatetourById,
+    deleteTourById
+} = require("./../controllers/tourController")
 
-router.route("/")
+const Router = express.Router()
+
+Router.route("/")
     .get(getAlltours)
     .post(createtour)
 
-router.route("/:id")
+Router.route("/:id")
     .get(gettourById)
     .patch(updatetourById)
-    .delete(deletetourByIda)
+    .delete(deleteTourById)
 
 
-module.exports = router
+module.exports = Router
 
 
 
-// router.get("/",getAlltours)
-// router.post("/",createtour)
+// Router.get("/",getAlltours)
+// Router.post("/",createtour)
 
-// router("/:id",gettourById)
-// router.patch("/:id",updatetourById)
-// router.delete("/:id",deletetourByIda)
+// Router("/:id",gettourById)
+// Router.patch("/:id",updatetourById)
+// Router.delete("/:id",deletetourByIda)

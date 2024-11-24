@@ -1,16 +1,17 @@
-const fs = require('fs');
+const fs = require('node:fs');
+const path = require('node:path');
 const express = require('express');
 
-const tours = JSON.parse(
-    fs.readdirSync(`${__dirname}/../dev-data/data/tours-simple.json`)
-)
+const filePath = path.join(__dirname, '../dev-data/data/tours-simple.json');
+const fileData = fs.readFileSync(filePath, 'utf-8');  // 'utf-8' ensures the content is read as a string
+const tours = JSON.parse(fileData);
 
 
 exports.getAllTours = (req, res) => {
     res.status(200).json({
         status: 'success',
         requestedAt: req.requestTime,
-        results: tours.length,
+        results: tours?.length,
         data: {
             tours
         }
