@@ -1,21 +1,21 @@
 const express = require('express');
 const {
-    getAlltours,
-    createtour,
-    gettourById,
-    updatetourById,
+    getAllTours,
+    createTour,
+    getTourById,
+    updateTourById,
     deleteTourById
 } = require("./../controllers/tourController")
 
 const Router = express.Router()
 
 Router.route("/")
-    .get(getAlltours)
-    .post(createtour)
+    .get(getAllTours)
+    .post(createTour)
 
 Router.route("/:id")
-    .get(gettourById)
-    .patch(updatetourById)
+    .get(getTourById)
+    .patch(updateTourById)
     .delete(deleteTourById)
 
 
