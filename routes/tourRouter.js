@@ -23,9 +23,9 @@ module.exports = Router
 
 
 
-// Router.get("/",getAlltours)
-// Router.post("/",createtour)
+// Router.get("/",getAllTours)
+// Router.post("/",createTour)
 
-// Router("/:id",gettourById)
-// Router.patch("/:id",updatetourById)
-// Router.delete("/:id",deletetourByIda)
+// Router("/:id",getTourById)
+// Router.patch("/:id",updateTourById)
+// Router.delete("/:id",deleteTourById)
