@@ -1,6 +1,7 @@
 const express = require('express');
 const {
     checkId,
+    checkBody,
     getAllTours,
     createTour,
     getTourById,
@@ -14,7 +15,7 @@ Router.param("id", checkId)
 
 Router.route("/")
     .get(getAllTours)
-    .post(createTour)
+    .post(checkBody, createTour)
 
 Router.route("/:id")
     .get(getTourById)
