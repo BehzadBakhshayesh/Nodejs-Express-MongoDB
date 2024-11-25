@@ -11,7 +11,7 @@ exports.getAllTours = (req, res) => {
     res.status(200).json({
         status: 'success',
         requestedAt: req.requestTime,
-        results: tours?.length,
+        results: tours.length,
         data: {
             tours
         }
