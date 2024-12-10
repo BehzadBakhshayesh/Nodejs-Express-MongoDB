@@ -86,8 +86,8 @@ exports.getAllTours = async (req, res) => {
             requestedAt: req.requestTime,
             results: tours.length,
             total: totalTours,
-            page: Math.max(parseInt(page), 1),
-            limit: Math.max(parseInt(limit), 1),
+            page: queryPage,
+            limit: queryLimit,
             data: tours,
         });
     } catch (error) {
