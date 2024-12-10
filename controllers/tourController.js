@@ -74,6 +74,7 @@ exports.getAllTours = async (req, res) => {
         }
 
         // Execute the query
+        // query.sort().select().skip().limit()
         const tours = await query;
 
         // Respond with the data
