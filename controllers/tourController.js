@@ -73,6 +73,9 @@ exports.getAllTours = async (req, res) => {
             });
         }
 
+        // Apply skip and limit to the query
+        query = query.skip(skip).limit(queryLimit);
+
         // Execute the query
         // query.sort().select().skip().limit()
         const tours = await query;
