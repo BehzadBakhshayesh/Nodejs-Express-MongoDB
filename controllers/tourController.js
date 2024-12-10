@@ -29,10 +29,10 @@ const Tour = require("./../models/tourModel")
 
 exports.getAllTours = async (req, res) => {
     try {
-        // Copy query parameters and remove excluded fields
-        const { sort, fields, page, limit, ...filters } = req.query;
+        // Extract query parameters
+        const { sort, fields, page = 1, limit = 5, ...filters } = req.query;
 
-        // Replace query operators (gte, gt, lte, lt) with MongoDB equivalents
+        // Convert query operators (gte, gt, lte, lt) to MongoDB equivalents
         const filterQuery = JSON.parse(
             JSON.stringify(filters).replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
         );
@@ -40,7 +40,7 @@ exports.getAllTours = async (req, res) => {
         // Build the query
         let query = Tour.find(filterQuery);
 
-        // Apply sorting if specified
+        // Apply sorting
         if (sort) {
             const sortBy = sort.split(',').join(' ');
             query = query.sort(sortBy);
@@ -54,6 +54,24 @@ exports.getAllTours = async (req, res) => {
             query = query.select('-__v');
         }
 
+        // Apply pagination
+        const queryPage = Math.max(parseInt(page), 1); // Ensure page is at least 1
+        const queryLimit = Math.max(parseInt(limit), 1); // Ensure limit is at least 1
+        const skip = (queryPage - 1) * queryLimit;
+
+        // Get total number of documents matching the filters
+        const totalTours = await Tour.countDocuments(filterQuery);
+
+        // Check if the requested page exists
+        // if (skip >= totalTours) {
+        //     throw new Error("This page does not exist")
+        // }
+        if (skip >= totalTours) {
+            return res.status(400).json({
+                status: 'failed',
+                message: 'This page does not exist',
+            });
+        }
 
         // Execute the query
         const tours = await query;
@@ -63,16 +81,20 @@ exports.getAllTours = async (req, res) => {
             status: 'success',
             requestedAt: req.requestTime,
             results: tours.length,
-            data: { tours },
+            total: totalTours,
+            page: Math.max(parseInt(page), 1),
+            limit: Math.max(parseInt(limit), 1),
+            data: tours,
         });
     } catch (error) {
         // Handle errors
         res.status(404).json({
             status: 'failed',
-            message: error.message ?? 'Something went wrong',
+            message: error.message || 'Unable to retrieve tours',
         });
     }
 };
+
 
 exports.createTour = async (req, res) => {
     try {
