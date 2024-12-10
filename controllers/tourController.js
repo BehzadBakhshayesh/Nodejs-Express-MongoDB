@@ -30,7 +30,7 @@ const Tour = require("./../models/tourModel")
 exports.getAllTours = async (req, res) => {
     try {
         // Copy query parameters and remove excluded fields
-        const { page, sort, limit, fields, ...filters } = req.query;
+        const { sort, fields, page, limit, ...filters } = req.query;
 
         // Replace query operators (gte, gt, lte, lt) with MongoDB equivalents
         const filterQuery = JSON.parse(
@@ -45,6 +45,15 @@ exports.getAllTours = async (req, res) => {
             const sortBy = sort.split(',').join(' ');
             query = query.sort(sortBy);
         }
+
+        // Select specific fields or exclude `__v` by default
+        if (fields) {
+            const queryFields = fields.split(',').join(' ');
+            query = query.select(queryFields);
+        } else {
+            query = query.select('-__v');
+        }
+
 
         // Execute the query
         const tours = await query;
