@@ -29,33 +29,41 @@ const Tour = require("./../models/tourModel")
 
 exports.getAllTours = async (req, res) => {
     try {
-        const queryObj = { ...req.query }
-        const excludedFields = ["page", "sort", 'limit', "fields"]
-        excludedFields.forEach(el => delete queryObj[el])
+        // Copy query parameters and remove excluded fields
+        const { page, sort, limit, fields, ...filters } = req.query;
 
+        // Replace query operators (gte, gt, lte, lt) with MongoDB equivalents
+        const filterQuery = JSON.parse(
+            JSON.stringify(filters).replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
+        );
 
-        // gte, gt, lte, lt
-        //before: { duration: { gte: '5' }, difficulty: 'easy' }
-        const query = JSON.parse((JSON.stringify(queryObj).replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)))
-        //after: { duration: { '$gte': '5' }, difficulty: 'easy' }
+        // Build the query
+        let query = Tour.find(filterQuery);
 
-        const tours = await Tour.find(query)
+        // Apply sorting if specified
+        if (sort) {
+            const sortBy = sort.split(',').join(' ');
+            query = query.sort(sortBy);
+        }
 
+        // Execute the query
+        const tours = await query;
+
+        // Respond with the data
         res.status(200).json({
             status: 'success',
             requestedAt: req.requestTime,
             results: tours.length,
-            data: {
-                tours
-            }
-        })
+            data: { tours },
+        });
     } catch (error) {
+        // Handle errors
         res.status(404).json({
-            status: 'faild',
-            message: error
-        })
+            status: 'failed',
+            message: error.message ?? 'Something went wrong',
+        });
     }
-}
+};
 
 exports.createTour = async (req, res) => {
     try {
