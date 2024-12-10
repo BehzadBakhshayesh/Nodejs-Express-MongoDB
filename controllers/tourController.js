@@ -1,3 +1,4 @@
+const { json } = require("express")
 const Tour = require("./../models/tourModel")
 
 
@@ -32,10 +33,13 @@ exports.getAllTours = async (req, res) => {
         const excludedFields = ["page", "sort", 'limit', "fields"]
         excludedFields.forEach(el => delete queryObj[el])
 
-        const query = Tour.find(queryObj)
 
-        const tours = await query
+        // gte, gt, lte, lt
+        //before: { duration: { gte: '5' }, difficulty: 'easy' }
+        const query = JSON.parse((JSON.stringify(queryObj).replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)))
+        //after: { duration: { '$gte': '5' }, difficulty: 'easy' }
 
+        const tours = await Tour.find(query)
 
         res.status(200).json({
             status: 'success',
