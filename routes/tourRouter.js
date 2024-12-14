@@ -6,12 +6,15 @@ const {
     createTour,
     getTourById,
     updateTourById,
-    deleteTourById
+    deleteTourById,
+    topTours
 } = require("./../controllers/tourController")
 
 const Router = express.Router()
 
 // Router.param("id", checkId)
+
+Router.route("/top-5-cheap").get(topTours, getAllTours)
 
 Router.route("/")
     .get(getAllTours)
@@ -21,7 +24,6 @@ Router.route("/:id")
     .get(getTourById)
     .patch(updateTourById)
     .delete(deleteTourById)
-
 
 module.exports = Router
 
