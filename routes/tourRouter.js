@@ -7,7 +7,8 @@ const {
     getTourById,
     updateTourById,
     deleteTourById,
-    topTours
+    topTours,
+    getTourStats
 } = require("./../controllers/tourController")
 
 const Router = express.Router()
@@ -15,6 +16,8 @@ const Router = express.Router()
 // Router.param("id", checkId)
 
 Router.route("/top-5-cheap").get(topTours, getAllTours)
+
+Router.route("/tour-stats").get(getTourStats)
 
 Router.route("/")
     .get(getAllTours)
