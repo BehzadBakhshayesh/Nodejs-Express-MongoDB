@@ -53,7 +53,7 @@ exports.getAllTours = async (req, res) => {
             data: tours,
             page: req.query.page ?? 1,
             limit: req.query.limit ?? 5,
-            total: totalTours,
+            // total: totalTours,
         });
     } catch (error) {
         // Handle errors
