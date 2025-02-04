@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please provide your email'],
         unique: true,
+        trim: true,
         lowercase: true,
         validate: [validator.isEmail, 'Please provide a valid email']
     },
@@ -35,7 +36,9 @@ const userSchema = new mongoose.Schema({
             }
         }
     }
-});
+},
+    { timestamps: true }
+);
 
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
