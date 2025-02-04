@@ -32,18 +32,20 @@ const userSchema = new mongoose.Schema({
         validate: {
             // this only works on CREATE and SAVE!!!
             validator: function (value) {
-                return value === this.password
-            }
-        }
-    }
+                return value === this.password;
+            },
+            message: 'Passwords do not match!',
+        },
+    },
 },
     { timestamps: true }
 );
 
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
+
     this.password = await bcrypt.hash(this.password, 12);
-    this.passwordConfirm = undefined
+    this.passwordConfirm = undefined;
     next();
 });
 
