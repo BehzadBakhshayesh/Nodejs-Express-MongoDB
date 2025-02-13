@@ -6,12 +6,13 @@ const {
     updateUserById,
     deleteUserById
 } = require("./../controllers/userController")
-const { signup } = require("./../controllers/authController")
+const { signup, login } = require("./../controllers/authController")
 
 const Router = express.Router()
 
 
 Router.post('/signup', signup)
+Router.post('/login', login)
 
 Router.route("/")
     .get(getAllUsers)
