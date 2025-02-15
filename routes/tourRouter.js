@@ -11,6 +11,11 @@ const {
     getTourStats,
     getMonthlyPlan
 } = require("./../controllers/tourController")
+const { protect } = require("./../controllers/authController")
+
+
+
+// hint: Router.route("/abc").get(middleware, controller)
 
 const Router = express.Router()
 
@@ -23,8 +28,8 @@ Router.route("/tour-stats").get(getTourStats)
 Router.route("/monthly-plan/:year").get(getMonthlyPlan)
 
 Router.route("/")
-    .get(getAllTours)
-    .post(createTour)
+    .get(protect, getAllTours)
+    .post(protect, createTour)
 
 Router.route("/:id")
     .get(getTourById)
