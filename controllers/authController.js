@@ -42,7 +42,7 @@ exports.login = catchAsync(async (req, res, next) => {
 })
 
 exports.protect = catchAsync(async (req, res, next) => {
-    console.log(typeof req.headers.authorization);
+
     let token;
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -52,13 +52,13 @@ exports.protect = catchAsync(async (req, res, next) => {
         return next(new AppError('You Are not logged in! please login to get access', 401))
     }
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
-    const freshUser = await User.findById(decoded.id)
-    if (!freshUser) {
+    const currentUser = await User.findById(decoded.id)
+    if (!currentUser) {
         return next(new AppError('The user belonging to this token does no longer exist.', 401))
     }
-    if (freshUser.changePasswordAfter(decoded.iat)) {
+    if (currentUser.changePasswordAfter(decoded.iat)) {
         return next(new AppError('User recently changed password! please log in again.', 401))
     }
-    req.user = freshUser
+    req.user = currentUser
     next()
 })
