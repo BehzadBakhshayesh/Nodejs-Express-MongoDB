@@ -42,8 +42,10 @@ exports.login = catchAsync(async (req, res, next) => {
 })
 
 exports.protect = catchAsync(async (req, res, next) => {
+    console.log(typeof req.headers.authorization);
     let token;
-    if (req.headers.authorization && req.headers.authorization.startWith('Bearer')) {
+
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1]
     }
     if (!token) {
@@ -54,5 +56,9 @@ exports.protect = catchAsync(async (req, res, next) => {
     if (!freshUser) {
         return next(new AppError('The user belonging to this token does no longer exist.', 401))
     }
+    if (freshUser.changePasswordAfter(decoded.iat)) {
+        return next(new AppError('User recently changed password! please log in again.', 401))
+    }
+    req.user = freshUser
     next()
 })
