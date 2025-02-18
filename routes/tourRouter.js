@@ -11,7 +11,7 @@ const {
     getTourStats,
     getMonthlyPlan
 } = require("./../controllers/tourController")
-const { protect } = require("./../controllers/authController")
+const { protect, restrictTo } = require("./../controllers/authController")
 
 
 
@@ -32,17 +32,16 @@ Router.route("/")
     .post(protect, createTour)
 
 Router.route("/:id")
-    .get(getTourById)
-    .patch(updateTourById)
-    .delete(deleteTourById)
+    .get(protect, getTourById)
+    .patch(protect, updateTourById)
+    .delete(protect, restrictTo("admin", 'lead-guide'), deleteTourById)
 
 module.exports = Router
 
 
 
-// Router.get("/", getAllTours)
-// Router.post("/", checkBody, createTour)
-
-// Router("/:id",getTourById)
-// Router.patch("/:id",updateTourById)
-// Router.delete("/:id",deleteTourById)
+// Router.get("/",protect, getAllTours)
+// Router.post("/",protect, checkBody, createTour)
+// Router("/:id",protect, getTourById)
+// Router.patch("/:id",protect, updateTourById)
+// Router.delete("/:id",protect,restrictTo("admin", 'lead-guide'), deleteTourById)
