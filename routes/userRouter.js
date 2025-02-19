@@ -14,7 +14,7 @@ const Router = express.Router()
 Router.post('/signup', signup)
 Router.post('/login', login)
 Router.post('/forgotPassword', forgotPassword)
-Router.post('/resetPassword', resetPassword)
+Router.patch('/resetPassword/:token', resetPassword)
 
 Router.route("/")
     .get(getAllUsers)
