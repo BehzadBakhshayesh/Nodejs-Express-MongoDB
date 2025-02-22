@@ -4,50 +4,53 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
-const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, 'Please tell your name'],
-        trim: true,
-    },
-    email: {
-        type: String,
-        required: [true, 'Please provide your email'],
-        unique: true,
-        trim: true,
-        lowercase: true,
-        validate: [validator.isEmail, 'Please provide a valid email']
-    },
-    photo: {
-        type: String,
-        default: 'default.jpg',
-    },
-    role: {
-        type: String,
-        enum: ['user', 'guide', 'lead-guide', 'admin']
-    },
-    password: {
-        type: String,
-        required: [true, 'Please provide a password'],
-        minlength: [8, 'Password must be at least 8 characters long'],
-        select: false,
-    },
-    passwordConfirm: {
-        type: String,
-        required: [true, 'Please confirm your password'],
-        validate: {
-            // this only works on CREATE and SAVE!!!
-            validator: function (value) {
-                return value === this.password;
-            },
-            message: 'Passwords do not match!',
+const userSchema = new mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: [true, 'Please tell your name'],
+            trim: true,
         },
+        email: {
+            type: String,
+            required: [true, 'Please provide your email'],
+            unique: true,
+            trim: true,
+            lowercase: true,
+            validate: [validator.isEmail, 'Please provide a valid email']
+        },
+        photo: {
+            type: String,
+            default: 'default.jpg',
+        },
+        role: {
+            type: String,
+            enum: ['user', 'guide', 'lead-guide', 'admin']
+        },
+        password: {
+            type: String,
+            required: [true, 'Please provide a password'],
+            minlength: [8, 'Password must be at least 8 characters long'],
+            select: false,
+        },
+        passwordConfirm: {
+            type: String,
+            required: [true, 'Please confirm your password'],
+            validate: {
+                // this only works on CREATE and SAVE!!!
+                validator: function (value) {
+                    return value === this.password;
+                },
+                message: 'Passwords do not match!',
+            },
+        },
+        passwordChangedAt: Date,
+        passwordResetToken: String,
+        passwordResetExpires: Date
     },
-    passwordChangedAt: Date,
-    passwordResetToken: String,
-    passwordResetExpires: Date
-},
-    { timestamps: true }
+    {
+        timestamps: true
+    }
 );
 
 userSchema.pre('save', async function (next) {
