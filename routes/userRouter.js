@@ -1,6 +1,7 @@
 const express = require('express')
 const {
     getAllUsers,
+    updateMe,
     createUser,
     getUserById,
     updateUserById,
@@ -15,7 +16,9 @@ Router.post('/signup', signup)
 Router.post('/login', login)
 Router.post('/forgotPassword', forgotPassword)
 Router.patch('/resetPassword/:token', resetPassword)
+
 Router.patch('/updateMyPassword', protect, updatePassword)
+Router.patch('/updateMe', protect, updateMe)
 
 Router.route("/")
     .get(getAllUsers)
