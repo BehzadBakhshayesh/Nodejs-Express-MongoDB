@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema({
         select: false
     }
 });
-
+// ==========================================================================
 userSchema.pre('save', async function (next) {
     // Only run this function if password was actually modified
     if (!this.isModified('password')) return next();
@@ -72,6 +72,7 @@ userSchema.pre(/^find/, function (next) {
     this.find({ active: { $ne: false } });
     next();
 });
+// ==========================================================================
 
 userSchema.methods.correctPassword = async function (
     candidatePassword,
@@ -108,6 +109,7 @@ userSchema.methods.createPasswordResetToken = function () {
 
     return resetToken;
 };
+// ==========================================================================
 
 const User = mongoose.model('User', userSchema);
 

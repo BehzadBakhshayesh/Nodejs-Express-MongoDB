@@ -6,7 +6,7 @@ const {
     updateUserById,
     deleteUserById
 } = require("./../controllers/userController")
-const { signup, login, forgotPassword, resetPassword } = require("./../controllers/authController")
+const { signup, login, protect, forgotPassword, resetPassword, updatePassword } = require("./../controllers/authController")
 
 const Router = express.Router()
 
@@ -15,6 +15,7 @@ Router.post('/signup', signup)
 Router.post('/login', login)
 Router.post('/forgotPassword', forgotPassword)
 Router.patch('/resetPassword/:token', resetPassword)
+Router.patch('/updateMyPassword', protect, updatePassword)
 
 Router.route("/")
     .get(getAllUsers)
