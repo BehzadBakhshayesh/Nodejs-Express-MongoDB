@@ -9,7 +9,6 @@ const sendEmail = async (optios) => {
             user: proccess.env.EMAIL_USERNAME,
             pass: proccess.env.EMAIL_PASSWORD,
         },
-
     })
 
     const mailOptions = {
