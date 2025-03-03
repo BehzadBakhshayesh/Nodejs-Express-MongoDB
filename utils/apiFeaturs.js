@@ -12,7 +12,6 @@ class APIFeaturs {
         this.query.find(filterQuery);
         return this
     }
-
     sort() {
         if (this.queryString.sort) {
             const sortBy = this.queryString.sort.split(',').join(' ');
@@ -22,7 +21,6 @@ class APIFeaturs {
         }
         return this
     }
-
     limitFields() {
         if (this.queryString.fields) {
             const queryFields = this.queryString.fields.split(',').join(' ');
@@ -32,7 +30,6 @@ class APIFeaturs {
         }
         return this
     }
-
     paginate() {
         const queryPage = Math.max(parseInt(this.queryString.page ?? 1), 1);
         const queryLimit = Math.max(parseInt(this.queryString.limit ?? 5), 1);
@@ -40,8 +37,6 @@ class APIFeaturs {
         this.query = this.query.skip(skip).limit(queryLimit);
         return this
     }
-
-
 }
 
 module.exports = APIFeaturs
