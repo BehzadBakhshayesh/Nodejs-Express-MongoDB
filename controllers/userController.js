@@ -13,7 +13,6 @@ const filterObj = (obj, ...allowedFields) => {
     return newObj
 }
 
-
 exports.getAllUsers = catchAsync(async (req, res, next) => {
     const users = await User.find();
 
@@ -55,3 +54,29 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
     })
 })
 
+
+
+exports.getUserById = (req, res) => {
+    res.status(500).json({
+        status: 'error',
+        message: 'This route is not yet defined!'
+    });
+};
+exports.createUser = (req, res) => {
+    res.status(500).json({
+        status: 'error',
+        message: 'This route is not yet defined!'
+    });
+};
+exports.updateUserById = (req, res) => {
+    res.status(500).json({
+        status: 'error',
+        message: 'This route is not yet defined!'
+    });
+};
+exports.deleteUserById = (req, res) => {
+    res.status(500).json({
+        status: 'error',
+        message: 'This route is not yet defined!'
+    });
+};
